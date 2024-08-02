@@ -41,6 +41,13 @@ For example with Vault policy `letsencrypt` and period `72h`
 vault token create -policy letsencrypt -period 72h
 ```
 
+## Copy executable
+Put `letshide` to `/usr/local/bin` and set executable bit
+```shell
+sudo cp letshide /usr/local/bin
+sudo chmod a+x /usr/local/bin/letshide
+```
+ 
 ## Create environment variables file `/etc/default/letshide`
 You could copy example from [etc/default/letshide](etc/default/letshide).
 - `VAULT_ADDR` - Address of the Vault server. The default is https://127.0.0.1:8200.
