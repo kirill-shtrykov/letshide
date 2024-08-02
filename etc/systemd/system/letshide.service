@@ -1,7 +1,0 @@
-[Unit]
-Description=Let's Hide!
-
-[Service]
-Type=oneshot
-EnvironmentFile=/etc/default/letshide
-ExecStart=/usr/local/bin/letshide
