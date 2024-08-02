@@ -49,18 +49,50 @@ sudo chmod a+x /usr/local/bin/letshide
 ```
  
 ## Create environment variables file `/etc/default/letshide`
-You could copy example from [etc/default/letshide](etc/default/letshide).
+```shell
+tee /etc/default/letshide <<EOF
+VAULT_ADDR=
+VAULT_TOKEN=
+VAULT_MOUNT=
+VAULT_PATH=
+CERT_DIR=
+EOF
+```
+
 - `VAULT_ADDR` - Address of the Vault server. The default is https://127.0.0.1:8200.
 - `VAULT_TOKEN` - The Vault Token. Required.
 - `VAULT_MOUNT` - The Vault mount point. The default is `kv`. 
 - `VAULT_PATH` - The path to store certificates. The default is `ssl` in root of mount point.
-- `CERT_DIR` - The path to `live` directory of Let's Encrypt. Ex.: `/etc/letsencrypt/live/example.com`. Required.
+- `CERT_DIR` - The path to certificate in `live` directory of Let's Encrypt. 
+  Ex.: `/etc/letsencrypt/live/example.com`. Required.
 
 ## Create SystemD unit file
-You could copy example from [etc/systemd/system/letshide.service](etc/systemd/system/letshide.service)
+```shell
+tee /etc/systemd/system/letshide.service <<EOF
+[Unit]
+Description=Let's Hide!
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/default/letshide
+ExecStart=/usr/local/bin/letshide
+EOF
+```
 
 ## Create SystemD timer file
-You could copy example from [etc/systemd/system/letshide.timer](etc/systemd/system/letshide.timer)
+```shell
+tee /etc/systemd/system/letshide.timer <<EOF
+[Unit]
+Description=Run letshide daily
+
+[Timer]
+OnCalendar=*-*-* 00:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+EOF
+```
 
 ## Enable and start timer
 ```shell
